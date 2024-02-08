@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  username     String?
+  address  String?
+  password String
+  notes    Note[]  // Define a one-to-many relationship between User and Note
+}
+
+
+model Note {
+  id          String   @id @default(uuid())
+  title       String
+  content     String?
+  priority    String
+  dateCreated DateTime
+  category    String
+  userId      String  // Foreign key referencing the User model
+  user        User    @relation(fields: [userId], references: [id])  
+  // Define the relationship
+}
+
+
